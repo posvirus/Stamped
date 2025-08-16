@@ -16,11 +16,68 @@ const isRegenerating = ref(false)
 const isSaving = ref(false)
 const error = ref('')
 
+// 截止时间相关状态
+const deadlineEnabled = ref(false)
+const deadlineDate = ref('')
+const deadlineTime = ref('')
+const showTimeModal = ref(false)
+// 弹窗中的临时时间状态
+const tempDeadlineDate = ref('')
+const tempDeadlineTime = ref('')
+
 // 检测是创建模式还是修改模式
 const isCreateMode = computed(() => route.query.mode === 'create')
 const isFirstRequest = ref(true)
 // 追踪是否已经成功创建了任务
 const hasCreatedSuccessfully = ref(false)
+
+// 格式化截止时间显示
+const formattedDeadline = computed(() => {
+  if (!deadlineEnabled.value || !deadlineDate.value) {
+    return '无限期'
+  }
+  
+  const date = new Date(deadlineDate.value + (deadlineTime.value ? ` ${deadlineTime.value}` : ' 23:59'))
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+})
+
+// 打开时间设置弹窗
+const openTimeModal = () => {
+  if (!deadlineEnabled.value) return
+  
+  // 将当前时间设置复制到临时状态
+  tempDeadlineDate.value = deadlineDate.value
+  tempDeadlineTime.value = deadlineTime.value
+  showTimeModal.value = true
+}
+
+// 确认时间设置
+const confirmTimeModal = () => {
+  deadlineDate.value = tempDeadlineDate.value
+  deadlineTime.value = tempDeadlineTime.value
+  showTimeModal.value = false
+}
+
+// 取消时间设置
+const cancelTimeModal = () => {
+  showTimeModal.value = false
+}
+
+// 当启用截止时间时自动打开弹窗
+const onDeadlineToggle = () => {
+  if (deadlineEnabled.value) {
+    // 延迟一点打开弹窗，让切换动画完成
+    setTimeout(() => {
+      openTimeModal()
+    }, 100)
+  }
+}
 
 // AI回复气泡状态
 const aiReplyBubble = ref({
@@ -41,6 +98,12 @@ const showAiReplyBubble = (message) => {
 }
 
 onMounted(() => {
+  // 初始化默认截止时间为明天
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  deadlineDate.value = tomorrow.toISOString().split('T')[0]
+  deadlineTime.value = '18:00'
+  
   if (isCreateMode.value) {
     // 创建模式：设置默认值
     goalDescription.value = '新的任务'
@@ -201,13 +264,20 @@ const confirmAndSave = async () => {
   error.value = ''
   
   try {
+    // 在任务内容最后添加截止日期信息
+    let finalAgreementContent = agreementContent.value
+    if (finalAgreementContent && !finalAgreementContent.endsWith('\n')) {
+      finalAgreementContent += '\n'
+    }
+    finalAgreementContent += `\n验证DDL：${formattedDeadline.value}`
+    
     // 调用API保存任务到数据库
-    await saveConfirmedTask(goalDescription.value, agreementContent.value)
+    await saveConfirmedTask(goalDescription.value, finalAgreementContent)
     
     // 使用状态管理添加新任务到本地状态
     const newTask = taskStore.addTask({
       title: goalDescription.value,
-      agreement: agreementContent.value
+      agreement: finalAgreementContent
     })
     
     console.log('新任务已添加到状态管理:', newTask)
@@ -280,6 +350,63 @@ const confirmAndSave = async () => {
           <div class="bubble-arrow"></div>
           <div class="bubble-content">
             {{ aiReplyBubble.message }}
+          </div>
+        </div>
+      </div>
+
+      <!-- 截止时间调整栏 -->
+      <div class="deadline-section">
+        <div class="deadline-bar" @click="openTimeModal">
+          <div class="deadline-left">
+            <div class="deadline-icon">⏰</div>
+            <span class="deadline-time-display">{{ formattedDeadline }}</span>
+          </div>
+          <label class="deadline-toggle" @click.stop>
+            <input 
+              type="checkbox" 
+              v-model="deadlineEnabled"
+              @change="onDeadlineToggle"
+              class="deadline-checkbox"
+            />
+            <span class="deadline-toggle-circle"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 时间设置弹窗 -->
+      <div v-if="showTimeModal" class="time-modal-overlay" @click="cancelTimeModal">
+        <div class="time-modal" @click.stop>
+          <div class="modal-header">
+            <h3 class="modal-title">设置截止时间</h3>
+          </div>
+          
+          <div class="modal-content">
+            <div class="modal-input-group">
+              <label class="modal-label">日期</label>
+              <input 
+                type="date" 
+                v-model="tempDeadlineDate"
+                class="modal-date-input"
+                :min="new Date().toISOString().split('T')[0]"
+              />
+            </div>
+            <div class="modal-input-group">
+              <label class="modal-label">时间</label>
+              <input 
+                type="time" 
+                v-model="tempDeadlineTime"
+                class="modal-time-input"
+              />
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button class="modal-button cancel" @click="cancelTimeModal">
+              取消
+            </button>
+            <button class="modal-button confirm" @click="confirmTimeModal">
+              确认
+            </button>
           </div>
         </div>
       </div>
@@ -722,6 +849,288 @@ const confirmAndSave = async () => {
   .bubble-content {
     font-size: 11px;
     padding: 10px 14px;
+  }
+}
+
+/* 截止时间调整栏样式 */
+.deadline-section {
+  margin: 20px 0;
+}
+
+.deadline-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 20px;
+  padding: 14px 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.deadline-bar:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.deadline-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.deadline-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.deadline-time-display {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 0.3px;
+}
+
+.deadline-toggle {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.deadline-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.deadline-toggle-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background: white;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deadline-toggle-circle::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #F4624B;
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+.deadline-checkbox:checked + .deadline-toggle-circle {
+  border-color: #F4624B;
+  background: white;
+}
+
+.deadline-checkbox:checked + .deadline-toggle-circle::after {
+  transform: scale(1);
+}
+
+/* 时间设置弹窗样式 */
+.time-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.time-modal {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  width: 90%;
+  max-width: 400px;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+.modal-date-input,
+.modal-time-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+  font-size: 16px;
+  background: white;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.modal-date-input:focus,
+.modal-time-input:focus {
+  outline: none;
+  border-color: #F4624B;
+  box-shadow: 0 0 0 4px rgba(244, 98, 75, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px 24px 24px;
+}
+
+.modal-button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.modal-button.cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.modal-button.cancel:hover {
+  background: #e8e8e8;
+}
+
+.modal-button.confirm {
+  background: #F4624B;
+  color: white;
+}
+
+.modal-button.confirm:hover {
+  background: #E0553F;
+  transform: translateY(-1px);
+}
+
+.modal-button:active {
+  transform: translateY(0);
+}
+
+/* 移动端优化 */
+@media (max-width: 480px) {
+  .deadline-bar {
+    padding: 12px 16px;
+  }
+  
+  .deadline-time-display {
+    font-size: 14px;
+  }
+  
+  .deadline-toggle-circle {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .deadline-toggle-circle::after {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .time-modal {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .modal-header {
+    padding: 20px 20px 12px 20px;
+  }
+  
+  .modal-title {
+    font-size: 16px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    gap: 16px;
+  }
+  
+  .modal-date-input,
+  .modal-time-input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  
+  .modal-actions {
+    padding: 12px 20px 20px 20px;
+    gap: 10px;
+  }
+  
+  .modal-button {
+    padding: 12px 16px;
+    font-size: 14px;
   }
 }
 </style>

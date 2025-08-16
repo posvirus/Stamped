@@ -105,10 +105,65 @@ const convertBase64ToDataUrl = (base64, type) => {
   return `data:${type};base64,${base64}`
 }
 
+// 解析任务DDL
+const parseTaskDeadline = (agreementText) => {
+  const ddlMatch = agreementText.match(/验证DDL：(.+?)(?:\n|$)/)
+  if (!ddlMatch) {
+    return null // 没有找到DDL信息
+  }
+  
+  const ddlText = ddlMatch[1].trim()
+  if (ddlText === '无限期') {
+    return null // 无限期任务
+  }
+  
+  // 解析中文日期格式，例如："2024年1月1日 18:00"
+  const dateMatch = ddlText.match(/(\d{4})年(\d{1,2})月(\d{1,2})日\s+(\d{1,2}):(\d{2})/)
+  if (dateMatch) {
+    const [, year, month, day, hour, minute] = dateMatch
+    return new Date(year, month - 1, day, hour, minute)
+  }
+  
+  return null // 无法解析的格式
+}
+
+// 检查任务是否过期
+const checkTaskExpired = () => {
+  if (!task.value || !task.value.agreement) {
+    return false
+  }
+  
+  const deadline = parseTaskDeadline(task.value.agreement)
+  if (!deadline) {
+    return false // 无DDL或无限期任务不过期
+  }
+  
+  return new Date() > deadline
+}
+
 // 提交验证
 const submitVerification = async () => {
   if (uploadedImages.value.length === 0) {
     alert('请至少上传一张图片')
+    return
+  }
+
+  // 检查任务是否过期
+  if (checkTaskExpired()) {
+    appStore.showError('该任务已过期啦，验证失败！', 4000)
+    
+    // 删除过期任务
+    try {
+      await taskStore.deleteTask(taskId)
+      console.log('过期任务已删除')
+    } catch (error) {
+      console.error('删除过期任务失败:', error)
+    }
+    
+    // 延迟跳转，让用户看到错误消息
+    setTimeout(() => {
+      router.push('/')
+    }, 2000)
     return
   }
 
