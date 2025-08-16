@@ -1,0 +1,342 @@
+/* 任务卡片样式规范 */
+
+/* 基础卡片样式 */
+.card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-light);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+.card:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-light);
+}
+
+/* 任务卡片 */
+.task-card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-light);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  border-left: 4px solid var(--primary-color);
+}
+
+.task-card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+.task-card:active {
+  transform: translateY(0);
+}
+
+/* 已完成任务卡片 */
+.task-card.completed {
+  border-left-color: var(--success-color);
+  opacity: 0.8;
+}
+
+.task-card.completed .task-title {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* 任务卡片头部 */
+.task-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.task-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin: 0;
+  flex: 1;
+  margin-right: var(--spacing-sm);
+}
+
+.task-status {
+  flex-shrink: 0;
+}
+
+/* 任务状态标签 */
+.task-status-tag {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-small);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.task-status-tag.pending {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #F57C00;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.task-status-tag.completed {
+  background-color: rgba(67, 160, 71, 0.1);
+  color: var(--success-color);
+  border: 1px solid rgba(67, 160, 71, 0.3);
+}
+
+/* 任务描述 */
+.task-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 任务元信息 */
+.task-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.task-date {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.task-date::before {
+  content: "📅";
+  font-size: var(--font-size-xs);
+}
+
+.task-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+/* 任务卡片底部操作 */
+.task-card-footer {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-progress {
+  flex: 1;
+  margin-right: var(--spacing-md);
+}
+
+.task-progress-bar {
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-light);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.task-progress-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.task-progress-fill.completed {
+  background-color: var(--success-color);
+}
+
+/* 空状态卡片 */
+.empty-card {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-light);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.3;
+}
+
+.empty-title {
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* 卡片列表容器 */
+.card-list {
+  padding: var(--spacing-md);
+}
+
+.card-list .card:last-child {
+  margin-bottom: 0;
+}
+
+/* 卡片网格布局 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+/* 紧凑卡片样式 */
+.card-compact {
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-compact .task-title {
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-compact .task-description {
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-xs);
+  -webkit-line-clamp: 1;
+}
+
+/* 卡片加载状态 */
+.card-loading {
+  background: linear-gradient(90deg, var(--bg-gray) 25%, var(--border-light) 50%, var(--bg-gray) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.card-loading .task-title,
+.card-loading .task-description,
+.card-loading .task-meta {
+  background-color: var(--border-light);
+  color: transparent;
+  border-radius: var(--border-radius-small);
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 移动端特殊适配 */
+@media screen and (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+  
+  .task-card {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .task-title {
+    font-size: var(--font-size-sm);
+  }
+  
+  .task-description {
+    font-size: var(--font-size-xs);
+  }
+  
+  .task-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+  
+  .task-progress {
+    margin-right: 0;
+  }
+}
+
+/* 深色模式预留 */
+@media (prefers-color-scheme: dark) {
+  .card,
+  .task-card {
+    background-color: #2d2d2d;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .task-title {
+    color: #ffffff;
+  }
+  
+  .task-description {
+    color: #cccccc;
+  }
+  
+  .task-meta {
+    color: #999999;
+  }
+  
+  .task-card-footer {
+    border-top-color: #444444;
+  }
+}
+
+/* 高对比度支持 */
+@media (prefers-contrast: high) {
+  .card,
+  .task-card {
+    border: 2px solid var(--text-primary);
+  }
+  
+  .task-status-tag {
+    border-width: 2px;
+    font-weight: 700;
+  }
+}
+
+/* 减少动画支持 */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .task-card {
+    transition: none;
+  }
+  
+  .card:hover,
+  .task-card:hover {
+    transform: none;
+  }
+  
+  .card-loading {
+    animation: none;
+  }
+}

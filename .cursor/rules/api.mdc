@@ -1,0 +1,56 @@
+---
+globs: src/api/**/*.js,src/api/**/*.ts,src/api/**/*.vue,src/api/*.js,src/api/*.ts,src/api/*.vue
+description: 为API文件添加标准注释格式的规则
+---
+
+# API 注释规范
+
+当编写或修改 `src/api/` 目录下的API文件时，请确保每个API函数都包含以下格式的JSDoc注释：
+
+## 注释格式要求
+
+每个API函数必须添加完整的注释，格式如下：
+
+```javascript
+/**
+* 接口名称
+* 功能描述
+* 入参
+* 返回参数
+* url地址
+* 请求方式
+**/
+```
+
+## 具体说明
+
+- **接口名称**: 简洁明了的接口名称
+- **功能描述**: 详细描述该接口的作用和业务场景
+- **入参**: 列出所有输入参数，包括参数名、类型、是否必填、说明
+- **返回参数**: 描述返回数据的结构和字段说明
+- **url地址**: API的完整URL路径
+- **请求方式**: HTTP方法（GET、POST、PUT、DELETE等）
+
+## 示例
+
+```javascript
+/**
+* 用户登录接口
+* 用户通过用户名和密码进行登录认证
+* 入参: {username: string, password: string} - 用户名和密码（必填）
+* 返回参数: {code: number, message: string, data: {token: string, userInfo: object}}
+* url地址: /api/auth/login
+* 请求方式: POST
+**/
+export const loginApi = (params) => {
+  return request.post('/api/auth/login', params)
+}
+```
+
+## 注意事项
+
+1. 所有API函数都必须添加此格式的注释
+2. 注释内容要准确反映实际的接口行为
+3. 参数描述要包含类型信息和必填性说明
+4. URL地址要与实际请求地址保持一致
+5. 当API发生变更时，必须同步更新注释内容

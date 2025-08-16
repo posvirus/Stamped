@@ -1,0 +1,484 @@
+/* 动画过渡效果 */
+
+/* 基础动画时长和缓动函数 */
+:root {
+  --animation-duration-fast: 0.2s;
+  --animation-duration-normal: 0.3s;
+  --animation-duration-slow: 0.5s;
+  
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 页面切换动画 */
+.page-transition-enter-active,
+.page-transition-leave-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.page-transition-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.page-transition-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* 页面返回动画 */
+.page-transition-back-enter-active,
+.page-transition-back-leave-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.page-transition-back-enter-from {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.page-transition-back-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* 淡入淡出动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 滑动动画 */
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.slide-down-enter-from {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* 缩放动画 */
+.scale-enter-active,
+.scale-leave-active {
+  transition: all var(--animation-duration-fast) var(--ease-spring);
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* 列表项动画 */
+.list-enter-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.list-leave-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-move {
+  transition: transform var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+/* 模态框动画 */
+.modal-enter-active {
+  transition: all var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.modal-leave-active {
+  transition: all var(--animation-duration-fast) var(--ease-out-cubic);
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .modal-content,
+.modal-leave-to .modal-content {
+  transform: scale(0.8) translateY(50px);
+}
+
+/* Toast 提示动画 */
+.toast-enter-active {
+  transition: all var(--animation-duration-normal) var(--ease-spring);
+}
+
+.toast-leave-active {
+  transition: all var(--animation-duration-fast) var(--ease-out-cubic);
+}
+
+.toast-enter-from {
+  opacity: 0;
+  transform: translateY(-100%) scale(0.8);
+}
+
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+/* Tab 切换动画 */
+.tab-content-enter-active,
+.tab-content-leave-active {
+  transition: all var(--animation-duration-fast) var(--ease-out-cubic);
+}
+
+.tab-content-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.tab-content-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* 加载动画 */
+.loading-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.loading-dots {
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0%, 20% {
+    color: transparent;
+    text-shadow: 0.25em 0 0 transparent, 0.5em 0 0 transparent;
+  }
+  40% {
+    color: var(--primary-color);
+    text-shadow: 0.25em 0 0 transparent, 0.5em 0 0 transparent;
+  }
+  60% {
+    text-shadow: 0.25em 0 0 var(--primary-color), 0.5em 0 0 transparent;
+  }
+  80%, 100% {
+    text-shadow: 0.25em 0 0 var(--primary-color), 0.5em 0 0 var(--primary-color);
+  }
+}
+
+/* 骨架屏动画 */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 弹跳动画 */
+.bounce {
+  animation: bounce 0.6s var(--ease-spring);
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 摇摆动画 */
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* 滑入动画工具类 */
+.slide-in-left {
+  animation: slideInLeft var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.slide-in-right {
+  animation: slideInRight var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.slide-in-up {
+  animation: slideInUp var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+.slide-in-down {
+  animation: slideInDown var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 缩放动画工具类 */
+.zoom-in {
+  animation: zoomIn var(--animation-duration-normal) var(--ease-spring);
+}
+
+.zoom-out {
+  animation: zoomOut var(--animation-duration-normal) var(--ease-out-cubic);
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+/* 翻转动画 */
+.flip {
+  animation: flip var(--animation-duration-slow) var(--ease-in-out-cubic);
+}
+
+@keyframes flip {
+  0% {
+    transform: perspective(400px) rotateY(0);
+  }
+  40% {
+    transform: perspective(400px) translateZ(150px) rotateY(170deg);
+  }
+  50% {
+    transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1.02);
+  }
+  80% {
+    transform: perspective(400px) rotateY(360deg) scale(0.95);
+  }
+  100% {
+    transform: perspective(400px) scale(1);
+  }
+}
+
+/* 悬浮效果 */
+.hover-lift {
+  transition: all var(--animation-duration-fast) var(--ease-out-cubic);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* 点击效果 */
+.click-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.click-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.click-effect:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* 下拉刷新动画 */
+.pull-to-refresh {
+  transform-origin: center;
+  animation: pullRefresh 1s linear infinite;
+}
+
+@keyframes pullRefresh {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 无障碍性：减少动画设置 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 性能优化：硬件加速 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 延迟类 */
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}

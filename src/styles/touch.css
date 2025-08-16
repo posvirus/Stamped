@@ -1,0 +1,354 @@
+/* 触摸交互增强样式 */
+
+/* 通用触摸反馈类 */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.touch-feedback::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+.touch-feedback:active::before {
+  width: 200%;
+  height: 200%;
+  opacity: 1;
+  transition: width 0.1s ease, height 0.1s ease, opacity 0.1s ease;
+}
+
+.touch-feedback:active {
+  transform: scale(0.98);
+}
+
+/* 触摸涟漪效果 */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(30, 136, 229, 0.2);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ripple-effect:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+/* 触摸高亮类 */
+.touch-highlight {
+  transition: background-color 0.1s ease;
+}
+
+.touch-highlight:active {
+  background-color: rgba(30, 136, 229, 0.1);
+}
+
+/* 触摸缩放类 */
+.touch-scale {
+  transition: transform 0.1s ease;
+}
+
+.touch-scale:active {
+  transform: scale(0.95);
+}
+
+/* 触摸弹性类 */
+.touch-bounce {
+  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.touch-bounce:active {
+  transform: scale(1.05);
+}
+
+/* 触摸抬升类 */
+.touch-lift {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.touch-lift:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 长按反馈 */
+.long-press-feedback {
+  position: relative;
+}
+
+.long-press-feedback::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid var(--primary-color);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.long-press-feedback.long-pressing::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 滑动指示器 */
+.swipe-indicator {
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary-color);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.swipe-indicator--left::after {
+  left: 0;
+}
+
+.swipe-indicator--right::after {
+  right: 0;
+}
+
+.swipe-indicator.swiping::after {
+  opacity: 1;
+}
+
+/* 可拖拽元素样式 */
+.draggable {
+  touch-action: none;
+  user-select: none;
+  transition: transform 0.1s ease;
+}
+
+.draggable.dragging {
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+
+/* 触摸友好的输入框 */
+.touch-input {
+  position: relative;
+}
+
+.touch-input input,
+.touch-input textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-input::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  pointer-events: none;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.touch-input input:focus + ::before,
+.touch-input textarea:focus + ::before {
+  border-color: var(--primary-color);
+}
+
+/* 触摸按钮状态 */
+.btn-touch {
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.btn-touch::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  pointer-events: none;
+}
+
+.btn-touch:active::before {
+  opacity: 1;
+}
+
+/* 触摸卡片效果 */
+.card-touch {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card-touch:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-light);
+}
+
+/* 手势图标指示 */
+.gesture-hint {
+  position: relative;
+}
+
+.gesture-hint::after {
+  content: attr(data-gesture);
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.gesture-hint:hover::after,
+.gesture-hint:focus::after {
+  opacity: 1;
+}
+
+/* 触摸区域扩展 */
+.touch-area-extend {
+  position: relative;
+}
+
+.touch-area-extend::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: inherit;
+}
+
+/* 禁用触摸效果的元素 */
+.no-touch-effects {
+  touch-action: auto;
+  -webkit-tap-highlight-color: initial;
+}
+
+.no-touch-effects * {
+  touch-action: auto;
+  -webkit-tap-highlight-color: initial;
+}
+
+/* 移动端特有的触摸样式 */
+@media (max-width: 768px) {
+  /* 确保所有可交互元素都有足够的触摸区域 */
+  button,
+  .btn,
+  .clickable,
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* 移动端专用的触摸反馈 */
+  .mobile-touch-feedback:active {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  /* 移动端链接样式 */
+  a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(30, 136, 229, 0.2);
+  }
+}
+
+/* 减弱动效模式下禁用触摸动画 */
+@media (prefers-reduced-motion: reduce) {
+  .touch-feedback,
+  .ripple-effect,
+  .touch-scale,
+  .touch-bounce,
+  .touch-lift,
+  .card-touch,
+  .btn-touch {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .touch-feedback:active,
+  .touch-scale:active,
+  .touch-bounce:active,
+  .touch-lift:active,
+  .card-touch:active {
+    transform: none !important;
+  }
+  
+  .ripple-effect::after {
+    display: none;
+  }
+}
+
+/* 高对比度模式优化 */
+@media (prefers-contrast: high) {
+  .touch-feedback::before,
+  .ripple-effect::after {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .long-press-feedback::before {
+    border-width: 3px;
+  }
+}

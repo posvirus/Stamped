@@ -1,0 +1,61 @@
+/* CSS变量定义 */
+:root {
+  /* 主色调 - 更鲜明的蓝色 */
+  --primary-color: #1976D2;
+  --primary-light: #42A5F5;
+  --primary-dark: #0D47A1;
+  
+  /* 成功色 */
+  --success-color: #43A047;
+  --success-light: #66BB6A;
+  --success-dark: #2E7D32;
+  
+  /* 背景色 */
+  --bg-color: #F5F5F5;
+  --bg-white: #FFFFFF;
+  --bg-gray: #FAFAFA;
+  
+  /* 文字颜色 */
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --text-disabled: #BDBDBD;
+  --text-white: #FFFFFF;
+  
+  /* 边框颜色 */
+  --border-color: #E0E0E0;
+  --border-light: #F5F5F5;
+  
+  /* 阴影 */
+  --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+  
+  /* 圆角 */
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --border-radius-large: 12px;
+  --border-radius-round: 50%;
+  
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* 字体大小 */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
+  
+  /* 按钮高度 */
+  --button-height-small: 32px;
+  --button-height-medium: 48px;
+  --button-height-large: 56px;
+  
+  /* 浮动按钮尺寸 */
+  --fab-size: 56px;
+}

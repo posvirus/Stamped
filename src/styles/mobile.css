@@ -1,0 +1,386 @@
+/* 移动端适配方案 */
+
+/* 基于375px设计稿的rem适配（iPhone X/11/12 标准尺寸） */
+html {
+  font-size: 16px; /* 默认字体大小 */
+}
+
+/* 超小屏设备 (小于320px) */
+@media screen and (max-width: 319px) {
+  html {
+    font-size: 13.6px; /* 320/375*16 */
+  }
+}
+
+/* 小屏设备 (320px - 360px) iPhone SE, 小安卓机 */
+@media screen and (min-width: 320px) and (max-width: 360px) {
+  html {
+    font-size: 13.6px; /* 320/375*16 */
+  }
+}
+
+/* 中小屏设备 (361px - 375px) iPhone 6/7/8 */
+@media screen and (min-width: 361px) and (max-width: 375px) {
+  html {
+    font-size: 15.5px; /* 361/375*16 */
+  }
+}
+
+/* 标准屏设备 (376px - 390px) iPhone X/11/12 */
+@media screen and (min-width: 376px) and (max-width: 390px) {
+  html {
+    font-size: 16px; /* 基准尺寸 */
+  }
+}
+
+/* 中大屏设备 (391px - 414px) iPhone 6/7/8 Plus */
+@media screen and (min-width: 391px) and (max-width: 414px) {
+  html {
+    font-size: 17.7px; /* 414/375*16 */
+  }
+}
+
+/* 大屏设备 (415px - 480px) 大屏安卓机 */
+@media screen and (min-width: 415px) and (max-width: 480px) {
+  html {
+    font-size: 20.5px; /* 480/375*16 */
+  }
+}
+
+/* 超大屏设备 (481px以上) 平板竖屏模式 */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  html {
+    font-size: 20.5px; /* 限制最大字体大小 */
+  }
+}
+
+/* 平板横屏和桌面适配 */
+@media screen and (min-width: 769px) {
+  html {
+    font-size: 16px; /* 回到标准字体大小 */
+  }
+  
+  .mobile-container,
+  .container {
+    max-width: 414px; /* 限制最大宽度 */
+  }
+}
+
+/* 移动端专用样式覆盖 */
+body {
+  font-size: 1rem; /* 基于根字体大小 */
+  line-height: 1.5;
+}
+
+/* 重新定义CSS变量为rem单位 */
+:root {
+  /* 间距 - rem单位 */
+  --spacing-xs-mobile: 0.25rem; /* 4px */
+  --spacing-sm-mobile: 0.5rem; /* 8px */
+  --spacing-md-mobile: 1rem; /* 16px */
+  --spacing-lg-mobile: 1.5rem; /* 24px */
+  --spacing-xl-mobile: 2rem; /* 32px */
+  
+  /* 字体大小 - rem单位 */
+  --font-size-xs-mobile: 0.75rem; /* 12px */
+  --font-size-sm-mobile: 0.875rem; /* 14px */
+  --font-size-md-mobile: 1rem; /* 16px */
+  --font-size-lg-mobile: 1.125rem; /* 18px */
+  --font-size-xl-mobile: 1.25rem; /* 20px */
+  --font-size-xxl-mobile: 1.5rem; /* 24px */
+  
+  /* 按钮高度 - rem单位 */
+  --button-height-small-mobile: 2rem; /* 32px */
+  --button-height-medium-mobile: 3rem; /* 48px */
+  --button-height-large-mobile: 3.5rem; /* 56px */
+  
+  /* 浮动按钮尺寸 - rem单位 */
+  --fab-size-mobile: 3.5rem; /* 56px */
+  
+  /* 圆角 - rem单位 */
+  --border-radius-small-mobile: 0.25rem; /* 4px */
+  --border-radius-medium-mobile: 0.5rem; /* 8px */
+  --border-radius-large-mobile: 0.75rem; /* 12px */
+}
+
+/* 移动端特有的类 */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+/* vw单位的辅助类 */
+.vw-full { width: 100vw; }
+.vh-full { height: 100vh; }
+
+.vw-90 { width: 90vw; }
+.vw-80 { width: 80vw; }
+.vw-70 { width: 70vw; }
+.vw-50 { width: 50vw; }
+
+/* 移动端特殊布局 */
+.mobile-container {
+  width: 100%;
+  max-width: 26rem; /* 414px */
+  margin: 0 auto;
+  padding: 0 1rem; /* 16px */
+}
+
+/* 移动端按钮适配 */
+.btn-mobile {
+  min-height: 3rem; /* 48px */
+  font-size: 1rem; /* 16px */
+  padding: 0 1.5rem; /* 24px */
+  border-radius: 0.5rem; /* 8px */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-mobile-large {
+  min-height: 3.5rem; /* 56px */
+  font-size: 1.125rem; /* 18px */
+  padding: 0 2rem; /* 32px */
+}
+
+/* 移动端输入框适配 */
+.input-mobile {
+  height: 3rem; /* 48px */
+  font-size: 1rem; /* 16px */
+  padding: 0 1rem; /* 16px */
+  border-radius: 0.5rem; /* 8px */
+  border-width: 1px;
+}
+
+.textarea-mobile {
+  min-height: 7.5rem; /* 120px */
+  padding: 1rem; /* 16px */
+  font-size: 1rem; /* 16px */
+  border-radius: 0.5rem; /* 8px */
+  border-width: 1px;
+}
+
+/* 移动端文字大小适配 */
+.text-xs-mobile { font-size: 0.75rem; } /* 12px */
+.text-sm-mobile { font-size: 0.875rem; } /* 14px */
+.text-md-mobile { font-size: 1rem; } /* 16px */
+.text-lg-mobile { font-size: 1.125rem; } /* 18px */
+.text-xl-mobile { font-size: 1.25rem; } /* 20px */
+.text-xxl-mobile { font-size: 1.5rem; } /* 24px */
+
+/* 移动端间距适配 */
+.p-xs-mobile { padding: 0.25rem; }
+.p-sm-mobile { padding: 0.5rem; }
+.p-md-mobile { padding: 1rem; }
+.p-lg-mobile { padding: 1.5rem; }
+.p-xl-mobile { padding: 2rem; }
+
+.m-xs-mobile { margin: 0.25rem; }
+.m-sm-mobile { margin: 0.5rem; }
+.m-md-mobile { margin: 1rem; }
+.m-lg-mobile { margin: 1.5rem; }
+.m-xl-mobile { margin: 2rem; }
+
+/* 移动端浮动按钮适配 */
+.fab-mobile {
+  width: 3.5rem; /* 56px */
+  height: 3.5rem; /* 56px */
+  bottom: 1.5rem; /* 24px */
+  right: 1.5rem; /* 24px */
+  font-size: 1.5rem; /* 24px */
+}
+
+/* 移动端触摸优化 */
+.touch-target {
+  min-height: 2.75rem; /* 44px - Apple推荐的最小触摸区域 */
+  min-width: 2.75rem;
+}
+
+/* 移动端导航栏适配 */
+.navbar-mobile {
+  height: 3.5rem; /* 56px */
+  padding: 0 1rem; /* 16px */
+}
+
+.navbar-title-mobile {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+}
+
+/* 移动端卡片适配 */
+.card-mobile {
+  border-radius: 0.75rem; /* 12px */
+  padding: 1rem; /* 16px */
+  margin-bottom: 0.75rem; /* 12px */
+}
+
+/* 移动端列表适配 */
+.list-item-mobile {
+  padding: 1rem; /* 16px */
+  min-height: 3.5rem; /* 56px */
+}
+
+/* 横屏适配 */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .fab-mobile {
+    bottom: 1rem; /* 16px */
+    right: 1rem; /* 16px */
+  }
+  
+  .navbar-mobile {
+    height: 3rem; /* 48px */
+  }
+  
+  .page-content {
+    padding: 0.75rem 1rem; /* 12px 16px */
+  }
+}
+
+/* 小屏幕设备特殊处理 */
+@media screen and (max-width: 360px) {
+  .mobile-container {
+    padding: 0 0.75rem; /* 12px */
+  }
+  
+  .card-mobile {
+    padding: 0.75rem; /* 12px */
+  }
+}
+
+/* 大屏手机适配 */
+@media screen and (min-width: 480px) {
+  .mobile-container {
+    max-width: 30rem; /* 480px */
+  }
+}
+
+/* iOS安全区域适配 */
+@supports (padding: max(0px)) {
+  .safe-area-inset-top {
+    padding-top: max(1rem, env(safe-area-inset-top)); /* 16px */
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom)); /* 16px */
+  }
+  
+  .safe-area-inset-left {
+    padding-left: max(1rem, env(safe-area-inset-left)); /* 16px */
+  }
+  
+  .safe-area-inset-right {
+    padding-right: max(1rem, env(safe-area-inset-right)); /* 16px */
+  }
+}
+
+/* 禁用iOS橡皮筋效果 */
+.no-bounce {
+  overscroll-behavior: none;
+}
+
+/* 移动端滚动优化 */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* 移动端点击反馈 */
+.tap-highlight {
+  -webkit-tap-highlight-color: rgba(30, 136, 229, 0.2);
+}
+
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 额外的设备适配特性 */
+
+/* 超高分辨率设备适配 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-border {
+    border-width: 0.5px;
+  }
+}
+
+/* 可折叠设备适配 */
+@media (max-width: 280px) {
+  html {
+    font-size: 12px; /* 极小屏设备 */
+  }
+  
+  .mobile-container {
+    padding: 0 0.5rem;
+  }
+  
+  .btn-mobile {
+    min-height: 2.5rem;
+    font-size: 0.875rem;
+    padding: 0 1rem;
+  }
+}
+
+/* 超宽屏幕移动设备（如折叠屏展开状态） */
+@media screen and (min-width: 600px) and (max-height: 480px) {
+  .mobile-container {
+    max-width: 50vw;
+    margin: 0 auto;
+  }
+  
+  .page-content {
+    padding: 1rem 2rem;
+  }
+}
+
+/* 高刷新率设备优化 */
+@media (prefers-reduced-motion: no-preference) {
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  .touch-feedback {
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+  
+  .touch-feedback:active {
+    transform: scale(0.98);
+    background-color: rgba(30, 136, 229, 0.1);
+  }
+}
+
+/* 减弱动效模式 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .smooth-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+/* Notch（刘海屏）适配增强 */
+@supports (padding: env(safe-area-inset-top)) {
+  .page-header {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .fab-mobile {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    right: calc(1.5rem + env(safe-area-inset-right));
+  }
+}
+
+/* 键盘弹出适配 */
+@media screen and (max-height: 500px) {
+  .keyboard-adjust {
+    padding-bottom: 0;
+  }
+  
+  .fab-mobile {
+    display: none; /* 键盘弹出时隐藏浮动按钮 */
+  }
+}
